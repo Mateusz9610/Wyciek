@@ -14,12 +14,24 @@ class TForm1 : public TForm
 {
 __published:	// IDE-managed Components
         TShape *tlo;
-        TImage *pas;
         TTimer *TimerOtoczenie;
+        TTimer *Lewo;
+        TTimer *Prawo;
+        TTimer *Gora;
+        TTimer *Dol;
+        TTimer *TimerPrzeszkoda;
         void __fastcall TimerOtoczenieTimer(TObject *Sender);
         void __fastcall FormCreate(TObject *Sender);
+        void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+        void __fastcall FormKeyUp(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+        void __fastcall LewoTimer(TObject *Sender);
+        void __fastcall PrawoTimer(TObject *Sender);
+        void __fastcall GoraTimer(TObject *Sender);
+        void __fastcall DolTimer(TObject *Sender);
+        void __fastcall TimerPrzeszkodaTimer(TObject *Sender);
 private:	// User declarations
-        int x;
 public:		// User declarations
 
         __fastcall TForm1(TComponent* Owner);
