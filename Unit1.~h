@@ -18,7 +18,9 @@ __published:	// IDE-managed Components
         TTimer *TimerOtoczenie;
         void __fastcall TimerOtoczenieTimer(TObject *Sender);
 private:	// User declarations
+        int x;
 public:		// User declarations
+
         __fastcall TForm1(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
