@@ -30,9 +30,26 @@ void FabrykaPasow(TShape* tlo)
         pasy.push_back(pas1);
 
 }
+class CFabrykaPasow
+{
+        private:
+        TShape* tlo;
+        TImage* pas1;
+        public:
+        CFabrykaPasow (TShape* tloo) : tlo(tloo) { tlo=tloo; }
+        void ProdukujPas () {
+        pas1=new TImage(Form1);
+        pas1->Parent=Form1;
+        pas1->Picture->LoadFromFile("img/pasy.bmp");
+        pas1->Left=((tlo->Width/2)-10); pas1->Top=-50;
+        pasy.push_back(pas1);}
+        void UsunPas () {}
+
+};
 //---------------------------------------------------------------------------
 void __fastcall TForm1::TimerOtoczenieTimer(TObject *Sender)
 {
+
     if (x<1)
     {
     FabrykaPasow(tlo);
@@ -43,7 +60,7 @@ void __fastcall TForm1::TimerOtoczenieTimer(TObject *Sender)
       pasy[i]->Top+=PredkoscOtoczenia;
     }
     //pasy.front()->Top+=PredkoscOtoczenia;
-    if(pasy.front()->Top>=pasy.front()->Height)
+    if(pasy.back()->Top>=pasy.front()->Height)
     {
      FabrykaPasow(tlo);
     }
@@ -52,9 +69,9 @@ void __fastcall TForm1::TimerOtoczenieTimer(TObject *Sender)
     pasy[i]->Top+=PredkoscOtoczenia;
     }*/
     //pas->Top+=PredkoscOtoczenia;
-    if (pasy.back()->Top>=tlo->Height/1.2)
+    if (pasy.front()->Top>=tlo->Height/1.2)
     {
-    TImage* wsk=pasy.back();
+    TImage* wsk=pasy.front();
     pasy.erase(pasy.begin());
     delete wsk;
     }
