@@ -15,7 +15,7 @@ TForm1 *Form1;
 __fastcall TForm1::TForm1(TComponent* Owner)
         : TForm(Owner)
 {
-    x=0;
+
 }
 #define PredkoscOtoczenia 10
 
