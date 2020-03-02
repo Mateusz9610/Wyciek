@@ -13,6 +13,7 @@ object Form1: TForm1
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnKeyUp = FormKeyUp
@@ -27,6 +28,19 @@ object Form1: TForm1
     ParentShowHint = False
     Pen.Color = clGray
     ShowHint = False
+  end
+  object MediaPlayer1: TMediaPlayer
+    Left = 544
+    Top = 0
+    Width = 29
+    Height = 30
+    Enabled = False
+    VisibleButtons = []
+    AutoEnable = False
+    Shareable = True
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
   end
   object TimerOtoczenie: TTimer
     Interval = 50

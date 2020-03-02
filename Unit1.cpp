@@ -82,7 +82,7 @@ class CPilka
         }pilka->Transparent=true;
         }
 friend void Kolizja(CFabrykaPrzeszkod&,CPilka&);
-}; CPilka PILKA;
+}PILKA;
 
 class CFabrykaPrzeszkod
 {
@@ -183,7 +183,7 @@ CFabrykaChmur CHMURA;
 
 void Kolizja (CFabrykaPrzeszkod& przeszkoda,CPilka& pilka)
 {
-     for(int i=0; i<przeszkoda.przeszkody.size();++i)
+     for(unsigned i=0; i<przeszkoda.przeszkody.size();++i)
      {
      if (       pilka.pilka->Left >= przeszkoda.przeszkody[i]->Left-pilka.pilka->Width &&
                 pilka.pilka->Left <= przeszkoda.przeszkody[i]->Left+przeszkoda.przeszkody[i]->Width &&
@@ -218,6 +218,9 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
     CHMURA.ProdukujPas();
     PRZESZKODA.UstanowRelacje(tlo);
     PILKA.AktualnaPilka();
+    MediaPlayer1->FileName="sound/Clock Machine - Spadaæ i lataæ.mp3";
+    MediaPlayer1->Open();
+    MediaPlayer1->Play();
 }
 //---------------------------------------------------------------------------
 
@@ -253,7 +256,7 @@ void __fastcall TForm1::LewoTimer(TObject *Sender)
 
 void __fastcall TForm1::PrawoTimer(TObject *Sender)
 {
-        if(PILKA.pilka->Left+PILKA.pilka->Width-60<=tlo->Width)
+        if(PILKA.pilka->Left+PILKA.pilka->Width<=tlo->Width)
         PILKA.pilka->Left+= PredkoscPojazdu;
 }
 //---------------------------------------------------------------------------
@@ -278,4 +281,10 @@ void __fastcall TForm1::TimerPrzeszkodaTimer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
+{
+        MediaPlayer1->Close();
+}
+//---------------------------------------------------------------------------
 
