@@ -28,17 +28,10 @@ class CFabrykaPasow
         TShape* tlo;
         TImage* pas1;
         TImage* wsk;
-        int x;
     public:
-        CFabrykaPasow (): x(1) {}
+        CFabrykaPasow () {}
         //Ustanowienie relacji z obiektem tlo
         void UstanowRelacje (TShape* tloo) { tlo= tloo; }
-        void ProdukujPierwszyPas () {
-                if (x<1)
-                {
-                CFabrykaPasow::ProdukujPas();
-                ++x;
-                }}
         void ProdukujPas () {
                 pas1=new TImage(Form1);
                 pas1->Parent=Form1;
@@ -77,18 +70,12 @@ void __fastcall TForm1::TimerOtoczenieTimer(TObject *Sender)
     PAS.RuchPasow();
     PAS.SprawdzCzyProdukcja();
     PAS.SprawdzCzyUsun();
-    /*for(int i=0; i<pasy.size(); ++i)
-    {
-    pasy[i]->Top+=PredkoscOtoczenia;
-    }*/
-    //pas->Top+=PredkoscOtoczenia;
-
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::FormCreate(TObject *Sender)
 {
-    PAS.ProdukujPierwszyPas();
     PAS.UstanowRelacje(tlo);
+    PAS.ProdukujPas();
 }
 //---------------------------------------------------------------------------
 

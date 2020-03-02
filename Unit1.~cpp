@@ -19,16 +19,18 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 }
 #define PredkoscOtoczenia 10
 
-
 class CFabrykaPasow
 {
     private:
+    //Tworzenie wektora na który rzucamy nowe pasy
         vector<TImage*> pasy;
+    //Tlo potrzebne do umieszczenia pasa w odpowiednim miejscu
         TShape* tlo;
         TImage* pas1;
         TImage* wsk;
     public:
         CFabrykaPasow () {}
+        //Ustanowienie relacji z obiektem tlo
         void UstanowRelacje (TShape* tloo) { tlo= tloo; }
         void ProdukujPas () {
                 pas1=new TImage(Form1);
@@ -41,16 +43,20 @@ class CFabrykaPasow
                 pasy.erase(pasy.begin());
                 delete wsk;}
         void RuchPasow() {
+        //Poruszanie siê ka¿dego pasa
                 for(int i=0;i<pasy.size();++i)
                 {
                         pasy[i]->Top+=PredkoscOtoczenia;
                 }}
         void SprawdzCzyProdukcja () {
+        //Sprawdzenie, czy górna czêsc pasa przekorczyla jego wysokosc (przyjêty warunek)
                 if(pasy.back()->Top>=pasy.front()->Height)
                 {
+                //Jesli tak to wywo³ujemy metodê stworzonej klasy
                 CFabrykaPasow::ProdukujPas();
                 }}
         void SprawdzCzyUsun () {
+        // po przekroczeniu odpowieniej wysokosci tla usuwamy stworzony pas
                 if (pasy.front()->Top>=tlo->Height/1.2)
                 {
                 CFabrykaPasow::UsunPas ();
@@ -61,20 +67,16 @@ CFabrykaPasow PAS;
 //---------------------------------------------------------------------------
 void __fastcall TForm1::TimerOtoczenieTimer(TObject *Sender)
 {
-    //PAS.UstanowRelacje(tlo);
-    if (x<1)
-    {
-    PAS.ProdukujPas();
-    ++x;
-    }
     PAS.RuchPasow();
     PAS.SprawdzCzyProdukcja();
     PAS.SprawdzCzyUsun();
-    /*for(int i=0; i<pasy.size(); ++i)
-    {
-    pasy[i]->Top+=PredkoscOtoczenia;
-    }*/
-    //pas->Top+=PredkoscOtoczenia;
-
 }
 //---------------------------------------------------------------------------
+void __fastcall TForm1::FormCreate(TObject *Sender)
+{
+    PAS.UstanowRelacje(tlo);
+    PAS.ProdukujPas();
+}
+//---------------------------------------------------------------------------
+
+
