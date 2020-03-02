@@ -17,6 +17,7 @@ __published:	// IDE-managed Components
         TImage *pas;
         TTimer *TimerOtoczenie;
         void __fastcall TimerOtoczenieTimer(TObject *Sender);
+        void __fastcall FormCreate(TObject *Sender);
 private:	// User declarations
         int x;
 public:		// User declarations

@@ -3,6 +3,7 @@ object Form1: TForm1
   Top = 127
   Width = 976
   Height = 549
+  VertScrollBar.Visible = False
   Caption = 'Form1'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
