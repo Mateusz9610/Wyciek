@@ -22,6 +22,7 @@ __published:	// IDE-managed Components
         TTimer *Dol;
         TTimer *TimerPrzeszkoda;
         TMediaPlayer *MediaPlayer1;
+        TTimer *TimerGwiazda;
         void __fastcall TimerOtoczenieTimer(TObject *Sender);
         void __fastcall FormCreate(TObject *Sender);
         void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -34,6 +35,7 @@ __published:	// IDE-managed Components
         void __fastcall DolTimer(TObject *Sender);
         void __fastcall TimerPrzeszkodaTimer(TObject *Sender);
         void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+        void __fastcall TimerGwiazdaTimer(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 

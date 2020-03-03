@@ -79,11 +79,85 @@ class CPilka
                         pilka->Top=WskTop;
                         pilka->Picture->LoadFromFile("img/pilka5.bmp");
                 break;
-        }pilka->Transparent=true;
+                case 6:
+                        delete pilka;
+                        pilka=new TImage(Form1);
+                        pilka->Parent=Form1;
+                        pilka->Left=WskLeft;
+                        pilka->Top=WskTop;
+                        pilka->Picture->LoadFromFile("img/pilka6.bmp");
+                break;
+                case 7:
+                        delete pilka;
+                        pilka=new TImage(Form1);
+                        pilka->Parent=Form1;
+                        pilka->Left=WskLeft;
+                        pilka->Top=WskTop;
+                        pilka->Picture->LoadFromFile("img/pilka7.bmp");
+                break;
+                case 8:
+                        delete pilka;
+                        pilka=new TImage(Form1);
+                        pilka->Parent=Form1;
+                        pilka->Left=WskLeft;
+                        pilka->Top=WskTop;
+                        pilka->Picture->LoadFromFile("img/pilka8.bmp");
+                break;
+                case 9:
+                        delete pilka;
+                        pilka=new TImage(Form1);
+                        pilka->Parent=Form1;
+                        pilka->Left=WskLeft;
+                        pilka->Top=WskTop;
+                        pilka->Picture->LoadFromFile("img/pilka9.bmp");
+                break;
+                case 10:
+                        delete pilka;
+                        pilka=new TImage(Form1);
+                        pilka->Parent=Form1;
+                        pilka->Left=WskLeft;
+                        pilka->Top=WskTop;
+                        pilka->Picture->LoadFromFile("img/pilka10.bmp");
+                break;
+        }pilka->Transparent=true; pilka->AutoSize=true;
         }
 friend void Kolizja(CFabrykaPrzeszkod&,CPilka&);
 }PILKA;
 
+//KLASA
+class CFabrykaGwiazd
+{
+   private:
+        TImage* gwiazda;
+        vector<TImage*> gwiazdy;
+        TShape* tlo;
+   public:
+         void UstanowRelacje (TShape* tloo) { tlo= tloo; }
+         void ProdukujGwiazde () {
+                gwiazda= new TImage(Form1);
+                gwiazda->Parent=Form1;
+                gwiazda->Picture->LoadFromFile("img/gwiazda.bmp");
+                gwiazda->Left=rand()%((tlo->Width)-gwiazda->Width); gwiazda->Top=-100;
+                gwiazda->AutoSize=true;
+                gwiazdy.push_back(gwiazda);}
+         void UsunGwiazde () {
+                gwiazda=gwiazdy.back();
+                gwiazdy.erase(gwiazdy.begin());
+                delete gwiazda;
+         }
+         void SprawdzCzyUsun () {
+                if (gwiazdy.front()->Top>=tlo->Height)
+                {
+                        CFabrykaGwiazd::UsunGwiazde();
+                }}
+         void RuchGwiazd () {
+                for(unsigned i=0;i<gwiazdy.size();++i)
+                {
+                        gwiazdy[i]->Top+=PredkoscOtoczenia;
+                }}
+}GWIAZDA;
+
+//KLASA
 class CFabrykaPrzeszkod
 {
     private:
@@ -103,28 +177,42 @@ class CFabrykaPrzeszkod
                         przeszkoda->Parent=Form1;
                         przeszkoda->Picture->LoadFromFile("img/przeszkoda1.bmp");
                         przeszkoda->Left=rand()%((tlo->Width)-przeszkoda->Width); przeszkoda->Top=-100;
+                        przeszkoda->AutoSize=true;
                         przeszkody.push_back(przeszkoda);
                 break;
                 case 1:
                         przeszkoda=new TImage(Form1);
                         przeszkoda->Parent=Form1;
                         przeszkoda->Picture->LoadFromFile("img/przeszkoda2.bmp");
-                        przeszkoda->Left=rand()%tlo->Width; przeszkoda->Top=-100;
+                        przeszkoda->Left=rand()%tlo->Width; przeszkoda->Top=-100; przeszkoda->AutoSize=true;
                         przeszkody.push_back(przeszkoda);
                 break;
                 case 2:
                         przeszkoda=new TImage(Form1);
                         przeszkoda->Parent=Form1;
                         przeszkoda->Picture->LoadFromFile("img/przeszkoda3.bmp");
-                        przeszkoda->Left=rand()%tlo->Width; przeszkoda->Top=-100;
+                        przeszkoda->Left=rand()%tlo->Width; przeszkoda->Top=-100; przeszkoda->AutoSize=true;
                         przeszkody.push_back(przeszkoda);
                 break;
                 }}
+        //Usuwa przeszkode jesli nastapi³a kolizja
         void UsunPrzeszkode (int i) {
                 //przeszkody[i]->Visible=false;
                 delete przeszkody[i];
                 przeszkody.erase(przeszkody.begin()+i);
                 }
+        //Sprawdza i usuwa przeszkody jesli wyszlo poza plansze
+        void UsunPrzeszkode1 () {
+                przeszkoda=przeszkody.front();
+                przeszkody.erase(przeszkody.begin());
+                delete przeszkoda;
+        }
+        void SprawdzCzyUsun () {
+        // po przekroczeniu odpowieniej wysokosci tla usuwamy stworzony pas
+                if (przeszkody.front()->Top>=tlo->Height)
+                {
+                CFabrykaPrzeszkod::UsunPrzeszkode1 ();
+                }}
         void RuchPrzeszkod () {
                 for(unsigned i=0;i<przeszkody.size();++i)
                 {
@@ -207,16 +295,22 @@ void __fastcall TForm1::TimerOtoczenieTimer(TObject *Sender)
 {
     CHMURA.RuchPasow();
     PRZESZKODA.RuchPrzeszkod();
+    GWIAZDA.RuchGwiazd();
     Kolizja(PRZESZKODA,PILKA);
+    GWIAZDA.SprawdzCzyUsun();
     CHMURA.SprawdzCzyProdukcja();
     CHMURA.SprawdzCzyUsun();
+    PRZESZKODA.SprawdzCzyUsun();
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::FormCreate(TObject *Sender)
 {
+    GWIAZDA.UstanowRelacje(tlo);
+    GWIAZDA.ProdukujGwiazde();
     CHMURA.UstanowRelacje(tlo);
     CHMURA.ProdukujPas();
     PRZESZKODA.UstanowRelacje(tlo);
+    PRZESZKODA.LosujPrzeszkode();
     PILKA.AktualnaPilka();
     MediaPlayer1->FileName="sound/Clock Machine - Spadaæ i lataæ.mp3";
     MediaPlayer1->Open();
@@ -270,7 +364,7 @@ void __fastcall TForm1::GoraTimer(TObject *Sender)
 
 void __fastcall TForm1::DolTimer(TObject *Sender)
 {
-      if(PILKA.pilka->Top+PILKA.pilka->Height-60<=tlo->Height)
+      if(PILKA.pilka->Top+PILKA.pilka->Height+10<=tlo->Height)
       PILKA.pilka->Top+= PredkoscPojazdu;
 }
 //---------------------------------------------------------------------------
@@ -285,6 +379,12 @@ void __fastcall TForm1::TimerPrzeszkodaTimer(TObject *Sender)
 void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 {
         MediaPlayer1->Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::TimerGwiazdaTimer(TObject *Sender)
+{
+     GWIAZDA.ProdukujGwiazde();
 }
 //---------------------------------------------------------------------------
 
