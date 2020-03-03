@@ -29,6 +29,12 @@ object Form1: TForm1
     Pen.Color = clGray
     ShowHint = False
   end
+  object IloscGwiazd: TLabel
+    Left = 552
+    Top = 32
+    Width = 3
+    Height = 13
+  end
   object MediaPlayer1: TMediaPlayer
     Left = 544
     Top = 0

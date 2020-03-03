@@ -23,6 +23,7 @@ __published:	// IDE-managed Components
         TTimer *TimerPrzeszkoda;
         TMediaPlayer *MediaPlayer1;
         TTimer *TimerGwiazda;
+        TLabel *IloscGwiazd;
         void __fastcall TimerOtoczenieTimer(TObject *Sender);
         void __fastcall FormCreate(TObject *Sender);
         void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
