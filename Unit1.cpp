@@ -18,22 +18,26 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 {
 
 }
-#define PredkoscOtoczenia 10
-#define PredkoscPojazdu 10
+int PredkoscOtoczenia=10;
+int PredkoscPojazdu=10;
+int PredkoscGwiazd=12;
+
 class CFabrykaPrzeszkod;
 class CFabrykaGwiazd;
 class CPilka
 {
      private:
         int x;
-        int IloscTrafionychGwiazd;
+
         int WskTop;
         int WskLeft;
         TLabel* wsk;
+        TLabel* wsk1;
      public:
+     int IloscTrafionychGwiazd;
      TImage* pilka;
      CPilka () : x(0) {}
-     void UstanowRelacje (TLabel* Label) {wsk=Label;}
+     void UstanowRelacje (TLabel* Label,TLabel* Labe) {wsk=Label;wsk1=Labe;}
      void Wyswietl() {wsk->Caption=IloscTrafionychGwiazd;}
      //Wszytywanie kolejnych pilek
      void AktualnaPilka () {
@@ -124,6 +128,9 @@ class CPilka
                         pilka->Top=WskTop;
                         pilka->Picture->LoadFromFile("img/pilka10.bmp");
                 break;
+                case 11:
+                wsk1->Visible=true;
+                break;
         }pilka->Transparent=true; pilka->AutoSize=true;
         }
 friend void Kolizja(CFabrykaPrzeszkod&,CPilka&);
@@ -148,7 +155,7 @@ class CFabrykaGwiazd
                 gwiazda->Transparent=true;
                 gwiazdy.push_back(gwiazda);}
          void UsunGwiazde () {
-                gwiazda=gwiazdy.front();
+                gwiazda= gwiazdy.front();
                 gwiazdy.erase(gwiazdy.begin());
                 delete gwiazda;
          }
@@ -164,7 +171,7 @@ class CFabrykaGwiazd
          void RuchGwiazd () {
                 for(unsigned i=0;i<gwiazdy.size();++i)
                 {
-                        gwiazdy[i]->Top+=PredkoscOtoczenia;
+                        gwiazdy[i]->Top+=PredkoscGwiazd;
                 }}
 friend void Kolizja (CFabrykaGwiazd&,CPilka&);
 }GWIAZDA;
@@ -190,6 +197,7 @@ class CFabrykaPrzeszkod
                         przeszkoda->Picture->LoadFromFile("img/przeszkoda1.bmp");
                         przeszkoda->Left=rand()%((tlo->Width)-przeszkoda->Width); przeszkoda->Top=-100;
                         przeszkoda->AutoSize=true;
+                        przeszkoda->Transparent=true;
                         przeszkody.push_back(przeszkoda);
                 break;
                 case 1:
@@ -197,6 +205,7 @@ class CFabrykaPrzeszkod
                         przeszkoda->Parent=Form1;
                         przeszkoda->Picture->LoadFromFile("img/przeszkoda2.bmp");
                         przeszkoda->Left=rand()%tlo->Width; przeszkoda->Top=-100; przeszkoda->AutoSize=true;
+                        przeszkoda->Transparent=true;
                         przeszkody.push_back(przeszkoda);
                 break;
                 case 2:
@@ -204,6 +213,7 @@ class CFabrykaPrzeszkod
                         przeszkoda->Parent=Form1;
                         przeszkoda->Picture->LoadFromFile("img/przeszkoda3.bmp");
                         przeszkoda->Left=rand()%tlo->Width; przeszkoda->Top=-100; przeszkoda->AutoSize=true;
+                        przeszkoda->Transparent=true;
                         przeszkody.push_back(przeszkoda);
                 break;
                 }}
@@ -321,15 +331,38 @@ void Kolizja (CFabrykaPrzeszkod& przeszkoda,CPilka& pilka)
 //---------------------------------------------------------------------------
 void __fastcall TForm1::TimerOtoczenieTimer(TObject *Sender)
 {
+        GWIAZDA.SprawdzCzyUsun();
     CHMURA.RuchPasow();
     PRZESZKODA.RuchPrzeszkod();
     GWIAZDA.RuchGwiazd();
     Kolizja(PRZESZKODA,PILKA);
     Kolizja(GWIAZDA,PILKA);
-    GWIAZDA.SprawdzCzyUsun();
+
     CHMURA.SprawdzCzyProdukcja();
     CHMURA.SprawdzCzyUsun();
     PRZESZKODA.SprawdzCzyUsun();
+    //Ro¿ne poziomy gry
+    int poziom=PILKA.IloscTrafionychGwiazd/4;
+    //srand(time(NULL));
+    switch(poziom)
+    {
+     case 0:
+     {TimerOtoczenie->Interval=40;
+     PredkoscGwiazd=15;
+     break;}
+     case 1:
+     {TimerOtoczenie->Interval=30;
+     PredkoscGwiazd=16;
+     break;}
+     case 2:
+     {TimerOtoczenie->Interval=20;
+     PredkoscGwiazd=15;}
+     break;
+     case 3:
+     {TimerOtoczenie->Interval=10;
+     PredkoscGwiazd=15;}
+     break;
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm1::FormCreate(TObject *Sender)
@@ -341,7 +374,7 @@ void __fastcall TForm1::FormCreate(TObject *Sender)
     PRZESZKODA.UstanowRelacje(tlo);
     PRZESZKODA.LosujPrzeszkode();
     PILKA.AktualnaPilka();
-    PILKA.UstanowRelacje(IloscGwiazd);
+    PILKA.UstanowRelacje(IloscGwiazd,koniec);
     MediaPlayer1->FileName="sound/Clock Machine - Spadaæ i lataæ.mp3";
     MediaPlayer1->Open();
     MediaPlayer1->Play();
@@ -417,4 +450,5 @@ void __fastcall TForm1::TimerGwiazdaTimer(TObject *Sender)
      GWIAZDA.ProdukujGwiazde();
 }
 //---------------------------------------------------------------------------
+
 

@@ -35,6 +35,21 @@ object Form1: TForm1
     Width = 3
     Height = 13
   end
+  object koniec: TLabel
+    Left = 192
+    Top = 200
+    Width = 221
+    Height = 37
+    Caption = 'KONIEC GRY!'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -32
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+    Visible = False
+  end
   object MediaPlayer1: TMediaPlayer
     Left = 544
     Top = 0
